@@ -50,14 +50,15 @@ func check_if_can_build(tile_pos: Vector2i, building: Dictionary) -> bool:
 		for x_atlas_check in range(0, x_horizontal):
 			if (tile_map_layers[tile_map_layer_index_temp + 1].get_cell_atlas_coords(Vector2i(x_index, y_index)).x != -1):
 				free_space = false
-			x_index += 1
 			y_atlas_check_temp = x_atlas_check
-		x_index -= 1
-		for l in range(0, y_horizontal):
-			y_index -= 1
-			y_atlas_check_temp += l + 1
-			if (tile_map_layers[tile_map_layer_index_temp + 1].get_cell_atlas_coords(Vector2i(x_index, y_index)).x != -1):
-				free_space = false
+			for l in range(0, y_horizontal):
+				y_index -= 1
+				y_atlas_check_temp += l + 1
+				if (tile_map_layers[tile_map_layer_index_temp + 1].get_cell_atlas_coords(Vector2i(x_index, y_index)).x != -1):
+					free_space = false
+			x_index += 1
+			y_index = tile_pos.y
+		
 		tile_map_layer_index_temp += 1
 		x_index -= x_horizontal
 	return free_space
@@ -82,6 +83,12 @@ func place_building(tile_pos: Vector2i, building: Dictionary):
 				tile_map_layers[tile_map_layer_index + 1].set_cell(Vector2i(x_index, y_index), 1, Vector2i(x_atlas_place, y_atlas_place))
 				x_index += 1
 				y_atlas_place_temp = x_atlas_place
+				
+				if x_atlas_place < x_horizontal - 1:
+					for g in range(0, y_horizontal):
+						y_index -= 1
+						tile_map_layers[tile_map_layer_index + 1].set_cell(Vector2i(x_index -1, y_index), 2, Vector2i(3, 0))
+					y_index += y_horizontal
 			x_index -= 1
 			for k in range(0, y_horizontal):
 				y_index -= 1
