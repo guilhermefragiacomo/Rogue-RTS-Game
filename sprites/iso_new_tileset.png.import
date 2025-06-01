@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b8yrjjtsooujh"
-path="res://.godot/imported/spr_villager.png-61d145c9edff999115d8450d9a282589.ctex"
+uid="uid://d3qdw2s8vrflg"
+path="res://.godot/imported/iso_new_tileset.png-a0adc2717b7c5cbd448ddb1f4cc7f796.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://spr_villager.png"
-dest_files=["res://.godot/imported/spr_villager.png-61d145c9edff999115d8450d9a282589.ctex"]
+source_file="res://sprites/iso_new_tileset.png"
+dest_files=["res://.godot/imported/iso_new_tileset.png-a0adc2717b7c5cbd448ddb1f4cc7f796.ctex"]
 
 [params]
 
