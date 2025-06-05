@@ -18,8 +18,12 @@ var ramp_atlas_north_west = Vector2i(1,1)
 var ramp_atlas_south_east = Vector2i(0,3)
 var ramp_atlas_south_west = Vector2i(1,3)
 var middle_atlas_south = Vector2i(1, 7)
+var middle_atlas_north = Vector2i(1, 8)
+var middle_atlas_west = Vector2i(0, 9)
 var middle_atlas_east = Vector2i(1, 10)
 var triangle_atlas_south = Vector2i(0, 7)
+var triangle_atlas_north = Vector2i(0, 8)
+var triangle_atlas_west = Vector2i(0, 9)
 var triangle_atlas_east = Vector2i(0, 10)
 
 func get_all_tile_map_layers():
@@ -64,31 +68,75 @@ func generate_world():
 				if y == 0:
 					old_tile_map_layer_index = tile_map_layer_index
 					old_coord = Vector2i(x,y) - Vector2i(tile_map_layer_index, tile_map_layer_index);
-					
+			
+			var layer = tile_map_layers[tile_map_layer_index]
+			var layer_below = tile_map_layers[tile_map_layer_index-1]
+			var old_layer = tile_map_layers[old_tile_map_layer_index]
+			var old_layer_above = tile_map_layers[old_tile_map_layer_index+1]
+			
+			var same_old_coord = Vector2i(x,y) - Vector2i(old_tile_map_layer_index, old_tile_map_layer_index)
+			var above_old_coord = Vector2i(x,y) - Vector2i(old_tile_map_layer_index+1, old_tile_map_layer_index+1)
+			var same_coord = Vector2i(x,y) - Vector2i(tile_map_layer_index, tile_map_layer_index)
+			var same_coord_below = Vector2i(x,y) - Vector2i(tile_map_layer_index-1, tile_map_layer_index-1)
+			var last_x_layer_coord = Vector2i(x - 1,y) - Vector2i(tile_map_layer_index, tile_map_layer_index)
+			var last_x_layer_coord_above = Vector2i(x - 1,y) - Vector2i(old_tile_map_layer_index+1, old_tile_map_layer_index+1)
+			var last_x_layer_old_coord_below = Vector2i(x - 1,y) - Vector2i(old_tile_map_layer_index-1, old_tile_map_layer_index-1)
+			var last_x_layer_coord_below = Vector2i(x - 1,y) - Vector2i(tile_map_layer_index-1, tile_map_layer_index-1)
+			var last_x_layer_old_coord = Vector2i(x - 1,y) - Vector2i(old_tile_map_layer_index, old_tile_map_layer_index)
+			
 			if old_tile_map_layer_index < tile_map_layer_index: # higher layer
-				if tile_map_layers[tile_map_layer_index].get_cell_atlas_coords(Vector2i(x - 1,y) - Vector2i(tile_map_layer_index, tile_map_layer_index)) == block_atlas:
-					tile_map_layers[tile_map_layer_index].set_cell(Vector2i(x,y) - Vector2i(tile_map_layer_index, tile_map_layer_index), source_id, middle_atlas_east)
+				if layer.get_cell_atlas_coords(last_x_layer_coord) == block_atlas:
+					layer.set_cell(same_coord, source_id, middle_atlas_east)
 				else:
-					tile_map_layers[tile_map_layer_index].set_cell(Vector2i(x,y) - Vector2i(tile_map_layer_index, tile_map_layer_index), source_id, ramp_atlas_south_west)
+					if (layer_below.get_cell_atlas_coords(last_x_layer_coord_below) == block_atlas):
+						if (layer.get_cell_atlas_coords(last_x_layer_coord) != triangle_atlas_north):
+							layer.set_cell(same_coord, source_id, triangle_atlas_north)
+							layer_below.set_cell(same_coord_below, source_id, block_atlas)
+						else:
+							layer.set_cell(same_coord, source_id, ramp_atlas_south_west)
+					else:
+						layer.set_cell(same_coord, source_id, ramp_atlas_south_west)
 			else: # lower layer
 				if old_tile_map_layer_index > tile_map_layer_index:
-					if tile_map_layers[old_tile_map_layer_index].get_cell_atlas_coords(Vector2i(x - 1,y) - Vector2i(old_tile_map_layer_index, old_tile_map_layer_index)) == block_atlas:
-						tile_map_layers[old_tile_map_layer_index].set_cell(Vector2i(x,y) - Vector2i(old_tile_map_layer_index, old_tile_map_layer_index), source_id, middle_atlas_south)
+					if old_layer.get_cell_atlas_coords(last_x_layer_old_coord) == block_atlas:
+						old_layer.set_cell(same_old_coord, source_id, middle_atlas_south)
 					else:
-						tile_map_layers[old_tile_map_layer_index].set_cell(Vector2i(x,y) - Vector2i(old_tile_map_layer_index, old_tile_map_layer_index), source_id, ramp_atlas_north_east)
-				else: # same layer
-					if tile_map_layers[old_tile_map_layer_index+1].get_cell_atlas_coords(Vector2i(x - 1,y) - Vector2i(old_tile_map_layer_index+1, old_tile_map_layer_index+1)) == block_atlas:
-						tile_map_layers[old_tile_map_layer_index+1].set_cell(Vector2i(x,y) - Vector2i(old_tile_map_layer_index+1, old_tile_map_layer_index+1), source_id, ramp_atlas_north_west)
-					else:
-						if tile_map_layers[old_tile_map_layer_index+1].get_cell_atlas_coords(Vector2i(x - 1,y) - Vector2i(old_tile_map_layer_index+1, old_tile_map_layer_index+1)) == ramp_atlas_north_east:
-							tile_map_layers[old_tile_map_layer_index].set_cell(Vector2i(x,y) - Vector2i(old_tile_map_layer_index, old_tile_map_layer_index), source_id, block_atlas)
-							tile_map_layers[old_tile_map_layer_index+1].set_cell(Vector2i(x,y) - Vector2i(old_tile_map_layer_index+1, old_tile_map_layer_index+1), source_id, triangle_atlas_south)
+						if old_layer.get_cell_atlas_coords(last_x_layer_old_coord) == triangle_atlas_west:
+							old_layer.set_cell(same_old_coord, source_id, ramp_atlas_north_east)
 						else:
-							if tile_map_layers[old_tile_map_layer_index+1].get_cell_atlas_coords(Vector2i(x - 1,y) - Vector2i(old_tile_map_layer_index+1, old_tile_map_layer_index+1)) == middle_atlas_south:
-								tile_map_layers[old_tile_map_layer_index].set_cell(Vector2i(x,y) - Vector2i(old_tile_map_layer_index, old_tile_map_layer_index), source_id, block_atlas)
-								tile_map_layers[old_tile_map_layer_index+1].set_cell(Vector2i(x,y) - Vector2i(old_tile_map_layer_index+1, old_tile_map_layer_index+1), source_id, triangle_atlas_south)
+							if (old_layer.get_cell_atlas_coords(old_coord) == ramp_atlas_south_east):
+								old_layer.set_cell(same_old_coord, source_id, triangle_atlas_west)
+								layer.set_cell(same_coord, source_id, block_atlas)
 							else:
-								tile_map_layers[tile_map_layer_index].set_cell(Vector2i(x,y) - Vector2i(tile_map_layer_index, tile_map_layer_index), source_id, block_atlas)
+								old_layer.set_cell(same_old_coord, source_id, ramp_atlas_north_east)
+				else: # same layer
+					if (layer.get_cell_atlas_coords(last_x_layer_coord) == ramp_atlas_south_west) || (layer.get_cell_atlas_coords(last_x_layer_coord) == middle_atlas_east):
+						layer.set_cell(same_coord, source_id, middle_atlas_north)
+					else:
+						match (old_layer_above.get_cell_atlas_coords(last_x_layer_coord_above)):
+							block_atlas:
+								old_layer_above.set_cell(above_old_coord, source_id, ramp_atlas_north_west)
+							ramp_atlas_north_east:
+								old_layer.set_cell(same_old_coord, source_id, block_atlas)
+								old_layer_above.set_cell(above_old_coord, source_id, triangle_atlas_south)
+							middle_atlas_south:
+								old_layer.set_cell(same_old_coord, source_id, block_atlas)
+								old_layer_above.set_cell(above_old_coord, source_id, triangle_atlas_south)
+							ramp_atlas_south_west:
+								old_layer.set_cell(same_old_coord, source_id, block_atlas)
+								old_layer_above.set_cell(above_old_coord, source_id, triangle_atlas_east)
+							middle_atlas_east:
+								old_layer.set_cell(same_old_coord, source_id, block_atlas)
+								old_layer_above.set_cell(above_old_coord, source_id, triangle_atlas_east)
+							_:
+								match (layer_below.get_cell_atlas_coords(last_x_layer_old_coord_below)):
+									block_atlas:
+										if (layer.get_cell_atlas_coords(last_x_layer_coord) == triangle_atlas_north):
+											layer.set_cell(same_coord, source_id, middle_atlas_north)
+										else: 
+											layer.set_cell(same_coord, source_id, ramp_atlas_south_east)
+									_:
+										layer.set_cell(same_coord, source_id, block_atlas)
 			
 			old_tile_map_layer_index = tile_map_layer_index
-			old_coord = Vector2i(x,y) - Vector2i(tile_map_layer_index, tile_map_layer_index);
+			old_coord = same_coord;
