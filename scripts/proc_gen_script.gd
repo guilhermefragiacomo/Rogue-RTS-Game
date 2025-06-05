@@ -19,7 +19,7 @@ var ramp_atlas_south_east = Vector2i(0,3)
 var ramp_atlas_south_west = Vector2i(1,3)
 var middle_atlas_south = Vector2i(1, 7)
 var middle_atlas_north = Vector2i(1, 8)
-var middle_atlas_west = Vector2i(0, 9)
+var middle_atlas_west = Vector2i(1, 9)
 var middle_atlas_east = Vector2i(1, 10)
 var triangle_atlas_south = Vector2i(0, 7)
 var triangle_atlas_north = Vector2i(0, 8)
@@ -95,26 +95,40 @@ func generate_world():
 						else:
 							layer.set_cell(same_coord, source_id, ramp_atlas_south_west)
 					else:
-						layer.set_cell(same_coord, source_id, ramp_atlas_south_west)
+						if (layer.get_cell_atlas_coords(last_x_layer_coord) == middle_atlas_north || layer.get_cell_atlas_coords(last_x_layer_coord) == ramp_atlas_south_east || layer.get_cell_atlas_coords(last_x_layer_coord) == middle_atlas_west):
+							layer.set_cell(same_coord, source_id, middle_atlas_east)
+						else:
+							if (layer.get_cell_atlas_coords(last_x_layer_coord) == ramp_atlas_north_west):
+								layer.set_cell(same_coord, source_id, triangle_atlas_north)
+								layer_below.set_cell(same_coord_below, source_id, block_atlas)
+							else:
+								if (layer.get_cell_atlas_coords(same_coord - Vector2i(0, 1)) == ramp_atlas_north_west):
+									layer.set_cell(same_coord, source_id, middle_atlas_east)
+								else:
+									layer.set_cell(same_coord, source_id, ramp_atlas_south_west)
 			else: # lower layer
 				if old_tile_map_layer_index > tile_map_layer_index:
 					if old_layer.get_cell_atlas_coords(last_x_layer_old_coord) == block_atlas:
 						old_layer.set_cell(same_old_coord, source_id, middle_atlas_south)
 					else:
-						if old_layer.get_cell_atlas_coords(last_x_layer_old_coord) == triangle_atlas_west:
-							old_layer.set_cell(same_old_coord, source_id, ramp_atlas_north_east)
+						if old_layer.get_cell_atlas_coords(last_x_layer_old_coord) == ramp_atlas_south_east || old_layer.get_cell_atlas_coords(last_x_layer_old_coord) == middle_atlas_west || old_layer.get_cell_atlas_coords(last_x_layer_old_coord) == triangle_atlas_north || old_layer.get_cell_atlas_coords(last_x_layer_old_coord) == middle_atlas_north:
+							old_layer.set_cell(same_old_coord, source_id, middle_atlas_south)
 						else:
-							if (old_layer.get_cell_atlas_coords(old_coord) == ramp_atlas_south_east):
+							if (old_layer.get_cell_atlas_coords(old_coord) == middle_atlas_west || old_layer.get_cell_atlas_coords(old_coord) == triangle_atlas_north):
 								old_layer.set_cell(same_old_coord, source_id, triangle_atlas_west)
 								layer.set_cell(same_coord, source_id, block_atlas)
 							else:
-								old_layer.set_cell(same_old_coord, source_id, ramp_atlas_north_east)
+								if (old_layer.get_cell_atlas_coords(old_coord) == ramp_atlas_south_east):
+									old_layer.set_cell(same_old_coord, source_id, triangle_atlas_west)
+									layer.set_cell(same_coord, source_id, block_atlas)
+								else:
+									old_layer.set_cell(same_old_coord, source_id, ramp_atlas_north_east)
 				else: # same layer
 					if (layer.get_cell_atlas_coords(last_x_layer_coord) == ramp_atlas_south_west) || (layer.get_cell_atlas_coords(last_x_layer_coord) == middle_atlas_east):
 						layer.set_cell(same_coord, source_id, middle_atlas_north)
 					else:
 						match (old_layer_above.get_cell_atlas_coords(last_x_layer_coord_above)):
-							block_atlas:
+							block_atlas, middle_atlas_west, ramp_atlas_south_east, middle_atlas_north:
 								old_layer_above.set_cell(above_old_coord, source_id, ramp_atlas_north_west)
 							ramp_atlas_north_east:
 								old_layer.set_cell(same_old_coord, source_id, block_atlas)
@@ -128,15 +142,35 @@ func generate_world():
 							middle_atlas_east:
 								old_layer.set_cell(same_old_coord, source_id, block_atlas)
 								old_layer_above.set_cell(above_old_coord, source_id, triangle_atlas_east)
+							triangle_atlas_west:
+								old_layer.set_cell(same_old_coord, source_id, block_atlas)
+								old_layer_above.set_cell(above_old_coord, source_id, triangle_atlas_south)
+							triangle_atlas_north:
+								old_layer.set_cell(same_old_coord, source_id, block_atlas)
+								old_layer_above.set_cell(above_old_coord, source_id, triangle_atlas_east)
 							_:
 								match (layer_below.get_cell_atlas_coords(last_x_layer_old_coord_below)):
 									block_atlas:
-										if (layer.get_cell_atlas_coords(last_x_layer_coord) == triangle_atlas_north):
-											layer.set_cell(same_coord, source_id, middle_atlas_north)
-										else: 
-											layer.set_cell(same_coord, source_id, ramp_atlas_south_east)
+										match(layer.get_cell_atlas_coords(last_x_layer_coord)):
+											triangle_atlas_north:
+												layer.set_cell(same_coord, source_id, middle_atlas_north)
+											triangle_atlas_west:
+												layer.set_cell(same_coord, source_id, middle_atlas_west)
+											ramp_atlas_north_east:
+												layer.set_cell(same_coord, source_id, middle_atlas_west)
+											_:
+												layer.set_cell(same_coord, source_id, ramp_atlas_south_east)
 									_:
-										layer.set_cell(same_coord, source_id, block_atlas)
+										if layer.get_cell_atlas_coords(last_x_layer_coord) == ramp_atlas_north_east:
+											layer.set_cell(same_coord, source_id, middle_atlas_west)
+										else:
+											if layer.get_cell_atlas_coords(last_x_layer_coord) == middle_atlas_south:
+												layer.set_cell(same_coord, source_id, middle_atlas_west)
+											else:
+												if layer.get_cell_atlas_coords(last_x_layer_coord) == ramp_atlas_north_west:
+													layer.set_cell(same_coord, source_id, ramp_atlas_south_east)
+												else:
+													layer.set_cell(same_coord, source_id, block_atlas)
 			
 			old_tile_map_layer_index = tile_map_layer_index
 			old_coord = same_coord;

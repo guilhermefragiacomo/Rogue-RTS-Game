@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://b2nlyw7ol0332" path="res://sprites/light_orb.png" id="5_j7wrs"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_4dvvg"]
+seed = 2
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_rnjyy"]
 noise = SubResource("FastNoiseLite_4dvvg")
