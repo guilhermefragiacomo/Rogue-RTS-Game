@@ -165,7 +165,7 @@ occluder = SubResource("OccluderPolygon2D_kvpfn")
 [node name="PointLight2D" type="PointLight2D" parent="."]
 light_mask = 3
 z_index = 1
-position = Vector2(-149, 190)
+position = Vector2(-143, 222)
 range_item_cull_mask = 3
 shadow_filter_smooth = 4.5
 texture = ExtResource("8_0tnpc")

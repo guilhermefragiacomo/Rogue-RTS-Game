@@ -1,16 +1,25 @@
-[gd_scene load_steps=8 format=3 uid="uid://ypycq7vd40qb"]
+[gd_scene load_steps=12 format=3 uid="uid://ypycq7vd40qb"]
 
 [ext_resource type="Script" uid="uid://w1y03b4f4ktl" path="res://scripts/proc_gen_script.gd" id="1_4dvvg"]
 [ext_resource type="TileSet" uid="uid://ba4gv6trkrdq4" path="res://data/tile_set.tres" id="2_rnjyy"]
+[ext_resource type="Shader" uid="uid://pljbknmem4hc" path="res://transparent.gdshader" id="3_fws66"]
 [ext_resource type="Script" uid="uid://cqgwlfidxqn0a" path="res://scripts/camera_2d.gd" id="3_rnjyy"]
 [ext_resource type="Texture2D" uid="uid://gi7en4cf01cb" path="res://sprites/light.png" id="4_04qyp"]
+[ext_resource type="Texture2D" uid="uid://dwxd7m1cyt76l" path="res://sprites/spr_house.png" id="4_hh0fu"]
 [ext_resource type="Texture2D" uid="uid://b2nlyw7ol0332" path="res://sprites/light_orb.png" id="5_j7wrs"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_4dvvg"]
-seed = 2
+seed = 5
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_rnjyy"]
 noise = SubResource("FastNoiseLite_4dvvg")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3m5ht"]
+shader = ExtResource("3_fws66")
+shader_parameter/tint_color = Vector4(0, 1, 0, 0.5)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_dubn7"]
+polygon = PackedVector2Array(0, 22, 31, 7, 0, 22, -31, 7)
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_4dvvg")
@@ -20,6 +29,12 @@ noise_height_text = SubResource("NoiseTexture2D_rnjyy")
 z_as_relative = false
 y_sort_enabled = true
 position = Vector2(0, -1)
+
+[node name="TileMapLayer" type="TileMapLayer" parent="Container"]
+light_mask = 3
+z_as_relative = false
+y_sort_enabled = true
+tile_set = ExtResource("2_rnjyy")
 
 [node name="TileMapLayer2" type="TileMapLayer" parent="Container"]
 light_mask = 3
@@ -124,6 +139,53 @@ z_as_relative = false
 y_sort_enabled = true
 position = Vector2(0, 112)
 tile_set = ExtResource("2_rnjyy")
+
+[node name="TileMapLayer16" type="TileMapLayer" parent="Container"]
+z_index = 15
+z_as_relative = false
+y_sort_enabled = true
+position = Vector2(0, 120)
+tile_set = ExtResource("2_rnjyy")
+
+[node name="TileMapLayer17" type="TileMapLayer" parent="Container"]
+z_index = 16
+z_as_relative = false
+y_sort_enabled = true
+position = Vector2(0, 128)
+tile_set = ExtResource("2_rnjyy")
+
+[node name="TileMapLayer18" type="TileMapLayer" parent="Container"]
+z_index = 17
+z_as_relative = false
+y_sort_enabled = true
+position = Vector2(0, 136)
+tile_set = ExtResource("2_rnjyy")
+
+[node name="TileMapLayer19" type="TileMapLayer" parent="Container"]
+z_index = 18
+z_as_relative = false
+y_sort_enabled = true
+position = Vector2(0, 144)
+tile_set = ExtResource("2_rnjyy")
+
+[node name="TileMapLayer20" type="TileMapLayer" parent="Container"]
+z_index = 19
+z_as_relative = false
+y_sort_enabled = true
+position = Vector2(0, 152)
+tile_set = ExtResource("2_rnjyy")
+
+[node name="SprHouse" type="Sprite2D" parent="Container"]
+light_mask = 2
+z_index = 20
+y_sort_enabled = true
+material = SubResource("ShaderMaterial_3m5ht")
+position = Vector2(-454, 679)
+texture = ExtResource("4_hh0fu")
+offset = Vector2(0, -24.5)
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="Container/SprHouse"]
+occluder = SubResource("OccluderPolygon2D_dubn7")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 script = ExtResource("3_rnjyy")

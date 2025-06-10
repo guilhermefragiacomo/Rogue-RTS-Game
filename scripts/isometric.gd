@@ -165,15 +165,3 @@ func find_tile_map_layer_index(global_mouse_position: Vector2i) -> int:
 		else:
 			index -= 1
 	return index
-"""
-func find_tile_map_layer_index(global_mouse_position: Vector2) -> int:
-	for i in tile_map_layers.size():
-		var layer = tile_map_layers[i]
-		var local_mouse_pos = layer.to_local(global_mouse_position)
-		var cell_coords = layer.local_to_map(local_mouse_pos)
-
-		var tile_data = layer.get_cell_tile_data(cell_coords)
-		if tile_data != null:
-			return i
-	return -1
-"""
