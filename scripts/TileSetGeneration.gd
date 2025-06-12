@@ -1,6 +1,6 @@
-extends Node2D
+class_name TileSetGeneration extends Node2D
 
-@export var noise_height_text : NoiseTexture2D
+var noise_height_text : NoiseTexture2D
 var noise : Noise
 
 var widht : int = 100
@@ -21,29 +21,26 @@ var triangle_atlas_north = Vector2i(0, 8)
 var triangle_atlas_west = Vector2i(0, 9)
 var triangle_atlas_east = Vector2i(0, 10)
 
-func get_all_tile_map_layers():
-	var tile_map_layers = []
-	for child in get_children():
-		if (child is TileMapLayer):
-			tile_map_layers.append(child)
-	return tile_map_layers
+var ground: Ground
 
-var tile_map_layers = []
-
-func _ready():
+func _init(ground: Ground) -> void:
+	self.ground = ground
+	
+	noise_height_text = NoiseTexture2D.new()
+	noise_height_text.noise = FastNoiseLite.new()
 	noise = noise_height_text.noise
-	tile_map_layers = get_all_tile_map_layers()
+	
 	generate_world()
 
 func find_tile_map_layer_index(global_mouse_position: Vector2i) -> int:
-	var index = tile_map_layers.size()-1
+	var index = ground.tile_map_layers.size()-1
 	var found = false
 	while (not found) && (index >= 0):
-		var layer = tile_map_layers[index]
+		var layer = ground.tile_map_layers[index]
 		var local_mouse_pos = layer.to_local(global_mouse_position)
 		var cell_coords = layer.local_to_map(local_mouse_pos)
 		
-		if (tile_map_layers[index].get_cell_atlas_coords(cell_coords).x != -1):
+		if (ground.tile_map_layers[index].get_cell_atlas_coords(cell_coords).x != -1):
 			found = true
 		else:
 			index -= 1
@@ -64,10 +61,10 @@ func generate_world():
 					old_tile_map_layer_index = tile_map_layer_index
 					old_coord = Vector2i(x,y) - Vector2i(tile_map_layer_index, tile_map_layer_index);
 			
-			var layer = tile_map_layers[tile_map_layer_index]
-			var layer_below = tile_map_layers[tile_map_layer_index-1]
-			var old_layer = tile_map_layers[old_tile_map_layer_index]
-			var old_layer_above = tile_map_layers[old_tile_map_layer_index+1]
+			var layer = ground.tile_map_layers[tile_map_layer_index]
+			var layer_below = ground.tile_map_layers[tile_map_layer_index-1]
+			var old_layer = ground.tile_map_layers[old_tile_map_layer_index]
+			var old_layer_above = ground.tile_map_layers[old_tile_map_layer_index+1]
 			
 			var same_old_coord = Vector2i(x,y) - Vector2i(old_tile_map_layer_index, old_tile_map_layer_index)
 			var above_old_coord = Vector2i(x,y) - Vector2i(old_tile_map_layer_index+1, old_tile_map_layer_index+1)

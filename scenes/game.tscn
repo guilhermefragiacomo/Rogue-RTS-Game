@@ -1,18 +1,12 @@
-[gd_scene load_steps=13 format=3 uid="uid://ypycq7vd40qb"]
+[gd_scene load_steps=10 format=3 uid="uid://ypycq7vd40qb"]
 
-[ext_resource type="Script" uid="uid://w1y03b4f4ktl" path="res://scripts/main.gd" id="1_4dvvg"]
-[ext_resource type="Script" uid="uid://daelaawv3iqnp" path="res://scenes/TileSetGeneration.gd" id="2_gee14"]
+[ext_resource type="Script" uid="uid://w1y03b4f4ktl" path="res://scripts/Main.gd" id="1_4dvvg"]
 [ext_resource type="TileSet" uid="uid://ba4gv6trkrdq4" path="res://data/tile_set.tres" id="2_rnjyy"]
 [ext_resource type="Shader" uid="uid://pljbknmem4hc" path="res://transparent.gdshader" id="3_fws66"]
-[ext_resource type="Script" uid="uid://cqgwlfidxqn0a" path="res://scripts/camera_2d.gd" id="3_rnjyy"]
+[ext_resource type="Script" uid="uid://cqgwlfidxqn0a" path="res://scripts/Camera2D.gd" id="3_rnjyy"]
 [ext_resource type="Texture2D" uid="uid://gi7en4cf01cb" path="res://sprites/light.png" id="4_04qyp"]
 [ext_resource type="Texture2D" uid="uid://dwxd7m1cyt76l" path="res://sprites/spr_house.png" id="4_hh0fu"]
 [ext_resource type="Texture2D" uid="uid://b2nlyw7ol0332" path="res://sprites/light_orb.png" id="5_j7wrs"]
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_gee14"]
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_0tnpc"]
-noise = SubResource("FastNoiseLite_gee14")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3m5ht"]
 shader = ExtResource("3_fws66")
@@ -28,8 +22,6 @@ script = ExtResource("1_4dvvg")
 z_as_relative = false
 y_sort_enabled = true
 position = Vector2(0, -1)
-script = ExtResource("2_gee14")
-noise_height_text = SubResource("NoiseTexture2D_0tnpc")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="Container"]
 light_mask = 3
