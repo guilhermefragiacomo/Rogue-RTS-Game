@@ -1,12 +1,14 @@
 class_name Ground extends Node
 
 var tile_map_container: Node2D
-var tile_map_layers = []
-var ground_source_ids = []
+var tile_map_layers: Array[TileMapLayer] = []
+var ground_source_ids: Array[int] = []
 
-func _init(tile_map_container: Node2D, ground_source_ids: Array) -> void:
+func _init(tile_map_container: Node2D, ground_source_ids: Array[int]) -> void:
 	self.tile_map_container = tile_map_container
 	self.ground_source_ids = ground_source_ids
+	
+	tile_map_layers = get_all_tile_map_layers()
 
 func get_all_tile_map_layers():
 	tile_map_layers = []

@@ -32,20 +32,6 @@ func _init(ground: Ground) -> void:
 	
 	generate_world()
 
-func find_tile_map_layer_index(global_mouse_position: Vector2i) -> int:
-	var index = ground.tile_map_layers.size()-1
-	var found = false
-	while (not found) && (index >= 0):
-		var layer = ground.tile_map_layers[index]
-		var local_mouse_pos = layer.to_local(global_mouse_position)
-		var cell_coords = layer.local_to_map(local_mouse_pos)
-		
-		if (ground.tile_map_layers[index].get_cell_atlas_coords(cell_coords).x != -1):
-			found = true
-		else:
-			index -= 1
-	return index
-
 func generate_world():
 	var old_coord;
 	var old_tile_map_layer_index

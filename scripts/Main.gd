@@ -9,20 +9,32 @@ extends Node2D
 
 var ground: Ground
 var building: Building = SimpleHouse.new()
-var buildings = []
+var buildings: Array[Building] = []
 
 func _ready():
 	ground = Ground.new(container, [3, 5])
-	ground.get_all_tile_map_layers()
-	var procedural_ground = await TileSetGeneration.new(ground)
+	var procedural_ground = TileSetGeneration.new(ground)
 	
 	resize_zoom(0)
 	
 func _unhandled_input(event):
-	if event.is_action_pressed("place_building"):
+	if event.is_action_pressed("zoom_in"):
+		resize_zoom(1)
+	if event.is_action_pressed("zoom_out"):
+		resize_zoom(-1)
+	if event.is_action_pressed("left_click"):
 		var tile_pos = ground.get_mouse_tile_coords(ground.find_tile_map_layer_index_ground(get_global_mouse_position()), get_global_mouse_position())
-		
-		buildings.append(building.place_building(ground, tile_pos, get_global_mouse_position()))
+		var b = Building.select_building(ground, buildings,tile_pos, get_global_mouse_position())
+	if event.is_action_pressed("select_house_1"):
+		if (preview_building.visible):
+			preview_building.visible = false
+		else:
+			preview_building.visible = true
+	if event.is_action_pressed("place_building"):
+		if (preview_building.visible):
+			var tile_pos = ground.get_mouse_tile_coords(ground.find_tile_map_layer_index_ground(get_global_mouse_position()), get_global_mouse_position())
+			
+			buildings.append(building.place_building(ground, tile_pos, get_global_mouse_position()))
 
 func resize_zoom(value: int):
 	if (zoom + value >= 1):
@@ -31,13 +43,10 @@ func resize_zoom(value: int):
 	self.scale = Vector2i(zoom, zoom)
 
 func _process(delta: float):
-	if Input.is_action_just_released("zoom_in"):
-		resize_zoom(1)
-	if Input.is_action_just_released("zoom_out"):
-		resize_zoom(-1)
 	light.position = get_local_mouse_position() + Vector2(90, 0)
 	
-	set_preview_in_grid()
+	if (preview_building.visible):
+		set_preview_in_grid()
 
 func set_preview_valid(is_valid: bool):
 	if is_valid:

@@ -31,16 +31,22 @@ func set_position(tile_map_layer_index: int, x_tile: int, y_tile: int):
 	set_x_tile(x_tile)
 	set_y_tile(y_tile)
 
+static func select_building(ground: Ground, buildings : Array[Building], tile_pos: Vector2i, global_mouse_pos: Vector2i) -> Building:
+	var tile_map_layer_index = ground.find_tile_map_layer_index(global_mouse_pos)
+	var tile_map_layer = ground.tile_map_layers[tile_map_layer_index]
+	
+	var atlas_id = tile_map_layer.get_cell_atlas_coords(tile_pos)
+	var source_id = tile_map_layer.get_cell_source_id(tile_pos)
+	
+	print(str(tile_map_layer_index) + " : " + str(atlas_id) + " / " + str(tile_pos) + " / " + str(source_id))
+	return 
+
 func _to_string() -> String:
 	return str(building_name) + ": tile_map_layer_index=" + str(tile_map_layer_index) + "; x_tile=" + str(x_tile) + "; y_tile=" + str(y_tile)
 
-func check_if_can_build(ground: Ground, tile_pos: Vector2i, global_mouse_pos) -> bool:
+func check_if_can_build(ground: Ground, tile_pos: Vector2i, global_mouse_pos: Vector2i) -> bool:
 	var tile_map_layer_index = ground.find_tile_map_layer_index_ground(global_mouse_pos)
 	var tile_map_layer = ground.tile_map_layers[tile_map_layer_index]
-		
-	var x_horizontal = x_horizontal
-	var y_horizontal = y_horizontal
-	var vertical = height
 	
 	var x_index = tile_pos.x - 1
 	var y_index = tile_pos.y
@@ -48,11 +54,11 @@ func check_if_can_build(ground: Ground, tile_pos: Vector2i, global_mouse_pos) ->
 	var free_space = true
 	
 	if ground.tile_map_layers[tile_map_layer_index].get_cell_source_id(tile_pos) == 3:
-		for y_atlas_check in range(vertical - 1, -1, -1):
+		for y_atlas_check in range(height - 1, -1, -1):
 			var y_atlas_check_temp = 0
 			var x_index_temp = x_index + 1
 			var y_index_temp = y_index + 1
-			if (y_atlas_check == vertical - 1):
+			if (y_atlas_check == height - 1):
 				for x_atlas_check in range(0, x_horizontal):
 					if (ground.tile_map_layers[tile_map_layer_index].get_cell_atlas_coords(Vector2i(x_index_temp, y_index_temp)).y != 0):
 						free_space = false
@@ -85,17 +91,13 @@ func check_if_can_build(ground: Ground, tile_pos: Vector2i, global_mouse_pos) ->
 	
 	return free_space
 
-func place_building(ground: Ground, tile_pos: Vector2i, global_mouse_pos) -> Building:	
+func place_building(ground: Ground, tile_pos: Vector2i, global_mouse_pos: Vector2i) -> Building:	
 	if (check_if_can_build(ground, tile_pos, global_mouse_pos)):
 		var tile_map_layer_index = ground.find_tile_map_layer_index_ground(global_mouse_pos)
 		var tile_map_layer = ground.tile_map_layers[tile_map_layer_index]
 		
 		var atlas_coords = tile_map_layer.get_cell_atlas_coords(tile_pos)
 		var tile_set_source = source_id
-		
-		var x_horizontal = x_horizontal
-		var y_horizontal = y_horizontal
-		var vertical = height
 				
 		var x_index = tile_pos.x - 1
 		var y_index = tile_pos.y
@@ -103,7 +105,7 @@ func place_building(ground: Ground, tile_pos: Vector2i, global_mouse_pos) -> Bui
 		var new_building = SimpleHouse.new()
 		new_building.set_position(tile_map_layer_index, tile_pos.x + 1, tile_pos.y + 1);
 		
-		for y_atlas_place in range(vertical-1, -1, -1):
+		for y_atlas_place in range(height-1, -1, -1):
 			var y_atlas_place_temp = 0
 			for x_atlas_place in range(0, x_horizontal):
 				ground.tile_map_layers[tile_map_layer_index + 1].set_cell(Vector2i(x_index, y_index), tile_set_source, Vector2i(x_atlas_place, y_atlas_place))
