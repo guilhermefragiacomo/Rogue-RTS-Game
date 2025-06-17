@@ -31,15 +31,28 @@ func set_position(tile_map_layer_index: int, x_tile: int, y_tile: int):
 	set_x_tile(x_tile)
 	set_y_tile(y_tile)
 
-static func select_building(ground: Ground, buildings : Array[Building], tile_pos: Vector2i, global_mouse_pos: Vector2i) -> Building:
+static func select_building(ground: Ground, buildings: Array[Building], tile_pos: Vector2i, global_mouse_pos: Vector2i) -> Building:
 	var tile_map_layer_index = ground.find_tile_map_layer_index(global_mouse_pos)
 	var tile_map_layer = ground.tile_map_layers[tile_map_layer_index]
 	
 	var atlas_id = tile_map_layer.get_cell_atlas_coords(tile_pos)
 	var source_id = tile_map_layer.get_cell_source_id(tile_pos)
+	var tile_map_layer_index_new = tile_map_layer_index + atlas_id.y
+	var new_x_y = Vector2i()
 	
-	print(str(tile_map_layer_index) + " : " + str(atlas_id) + " / " + str(tile_pos) + " / " + str(source_id))
-	return 
+	for b in buildings:
+		if (b.source_id == source_id):
+			if (b.tile_map_layer_index == tile_map_layer_index_new):
+				if (atlas_id.x >= b.x_horizontal):
+					new_x_y.x = tile_pos.x - b.x_horizontal + 1 - atlas_id.y
+					new_x_y.y = tile_pos.y - atlas_id.y + (atlas_id.x - b.y_horizontal)
+				else:
+					new_x_y.x = tile_pos.x - atlas_id.x - atlas_id.y
+					new_x_y.y = tile_pos.y - atlas_id.y
+				if (b.x_tile == new_x_y.x):
+					if (b.y_tile == new_x_y.y):
+						return b
+	return null
 
 func _to_string() -> String:
 	return str(building_name) + ": tile_map_layer_index=" + str(tile_map_layer_index) + "; x_tile=" + str(x_tile) + "; y_tile=" + str(y_tile)
@@ -102,13 +115,20 @@ func place_building(ground: Ground, tile_pos: Vector2i, global_mouse_pos: Vector
 		var x_index = tile_pos.x - 1
 		var y_index = tile_pos.y
 		
-		var new_building = SimpleHouse.new()
-		new_building.set_position(tile_map_layer_index, tile_pos.x + 1, tile_pos.y + 1);
+		var new_building: Building;
 		
 		for y_atlas_place in range(height-1, -1, -1):
 			var y_atlas_place_temp = 0
 			for x_atlas_place in range(0, x_horizontal):
 				ground.tile_map_layers[tile_map_layer_index + 1].set_cell(Vector2i(x_index, y_index), tile_set_source, Vector2i(x_atlas_place, y_atlas_place))
+				
+				if (y_atlas_place == 0):
+					if (x_atlas_place == 0):
+						new_building = SimpleHouse.new()
+						new_building.set_position(tile_map_layer_index + 1, x_index, y_index);
+						
+						print(new_building)
+				
 				x_index += 1
 				y_atlas_place_temp = x_atlas_place
 				

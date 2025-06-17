@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=4 uid="uid://ypycq7vd40qb"]
+[gd_scene load_steps=10 format=3 uid="uid://ypycq7vd40qb"]
 
 [ext_resource type="Script" uid="uid://w1y03b4f4ktl" path="res://scripts/Main.gd" id="1_4dvvg"]
 [ext_resource type="TileSet" uid="uid://ba4gv6trkrdq4" path="res://data/tile_set.tres" id="2_rnjyy"]
@@ -166,7 +166,6 @@ z_index = 19
 z_as_relative = false
 y_sort_enabled = true
 position = Vector2(0, 153)
-tile_map_data = PackedByteArray("AADx/wEAAQAAAAUAAAD1/wIAAQABAAUAAADx/wMAAQAAAAAAAADy/wMAAQABAAAAAADv/wIAAQABAAMAAAD1/wQAAQABAAAAAAD1/wAAAQABAAAAAAD0/wAAAQAAAAAAAADv/wMAAQABAAUAAAD2/wIAAQABAAMAAAA=")
 tile_set = ExtResource("2_rnjyy")
 
 [node name="SprHouse" type="Sprite2D" parent="Container"]

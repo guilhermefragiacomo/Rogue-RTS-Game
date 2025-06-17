@@ -10,6 +10,7 @@ extends Node2D
 var ground: Ground
 var building: Building = SimpleHouse.new()
 var buildings: Array[Building] = []
+var selected_building: Building = null
 
 func _ready():
 	ground = Ground.new(container, [3, 5])
@@ -23,8 +24,9 @@ func _unhandled_input(event):
 	if event.is_action_pressed("zoom_out"):
 		resize_zoom(-1)
 	if event.is_action_pressed("left_click"):
-		var tile_pos = ground.get_mouse_tile_coords(ground.find_tile_map_layer_index_ground(get_global_mouse_position()), get_global_mouse_position())
-		var b = Building.select_building(ground, buildings,tile_pos, get_global_mouse_position())
+		var tile_pos = ground.get_mouse_tile_coords(ground.find_tile_map_layer_index(get_global_mouse_position()), get_global_mouse_position())
+		selected_building = Building.select_building(ground, buildings, tile_pos, get_global_mouse_position())
+		
 	if event.is_action_pressed("select_house_1"):
 		if (preview_building.visible):
 			preview_building.visible = false
