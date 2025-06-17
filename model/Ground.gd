@@ -19,7 +19,10 @@ func get_all_tile_map_layers():
 
 func get_mouse_tile_coords(tile_map_layer_index: int, global_mouse_pos: Vector2i) -> Vector2i:
 	return tile_map_layers[tile_map_layer_index].local_to_map(tile_map_layers[tile_map_layer_index].to_local(global_mouse_pos))
-	
+
+func get_position_by_tile_coord(zoom: int, tile_map_layer_index: int, tile_coord: Vector2i) -> Vector2i:
+	return (tile_map_layers[tile_map_layer_index].to_global(tile_map_layers[tile_map_layer_index].map_to_local(tile_coord)) / zoom) + Vector2(16,0)
+
 func find_tile_map_layer_index(global_mouse_position: Vector2i) -> int:
 	var index = tile_map_layers.size()-1
 	var found = false

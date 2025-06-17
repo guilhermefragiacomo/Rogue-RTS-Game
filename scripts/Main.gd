@@ -4,6 +4,8 @@ extends Node2D
 
 @onready var light: PointLight2D = $PointLight2D
 @onready var preview_building = $Container/SprHouse
+@onready var canvas_layer_house_outline = $CanvasLayer
+@onready var house_outline = $CanvasLayer/SprHouseOutline
 @onready var preview_material = preview_building.material as ShaderMaterial
 @onready var container: Node2D = $Container
 
@@ -26,7 +28,12 @@ func _unhandled_input(event):
 	if event.is_action_pressed("left_click"):
 		var tile_pos = ground.get_mouse_tile_coords(ground.find_tile_map_layer_index(get_global_mouse_position()), get_global_mouse_position())
 		selected_building = Building.select_building(ground, buildings, tile_pos, get_global_mouse_position())
-		
+		if (selected_building != null):
+			house_outline.position = ground.get_position_by_tile_coord(zoom, selected_building.tile_map_layer_index, Vector2i(selected_building.x_tile, selected_building.y_tile))
+			house_outline.visible = true
+		else:
+			house_outline.visible = false
+			
 	if event.is_action_pressed("select_house_1"):
 		if (preview_building.visible):
 			preview_building.visible = false
@@ -43,6 +50,7 @@ func resize_zoom(value: int):
 		if (zoom + value <= 4):
 			zoom += value
 	self.scale = Vector2i(zoom, zoom)
+	canvas_layer_house_outline.scale = Vector2i(zoom, zoom)
 
 func _process(delta: float):
 	light.position = get_local_mouse_position() + Vector2(90, 0)
