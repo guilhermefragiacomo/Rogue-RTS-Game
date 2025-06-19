@@ -1,0 +1,1 @@
+class_name GroundLivingEntity extends LivingEntity

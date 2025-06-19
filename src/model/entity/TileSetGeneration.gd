@@ -3,8 +3,8 @@ class_name TileSetGeneration extends Node2D
 var noise_height_text : NoiseTexture2D
 var noise : Noise
 
-var widht : int = 100
-var height : int = 100
+var widht : int = 50
+var height : int = 50
 
 var source_id = 3
 var block_atlas = Vector2i(0,0)

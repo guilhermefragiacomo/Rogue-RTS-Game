@@ -1,0 +1,1 @@
+class_name EconomicBuilding extends Building

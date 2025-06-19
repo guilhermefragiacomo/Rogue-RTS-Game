@@ -1,5 +1,5 @@
 {
   "simple_house": {
-	"script_path": "res://src/model/entity/SimpleHouse.gd"
+	"script_path": "res://src/model/entity/game_entities/buildings/economic_buildings/SimpleHouse.gd"
   }
 }

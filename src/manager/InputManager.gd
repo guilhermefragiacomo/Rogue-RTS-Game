@@ -10,10 +10,12 @@ var current_mode: InputMode = InputMode.DEFAULT
 var handlers = {}
 
 var building_manager: BuildingManager
+var entity_manager: EntityManager
 var data: Data
 
-func _init(data: Data, buildingManager: BuildingManager) -> void:
+func _init(data: Data, buildingManager: BuildingManager, entity_manager: EntityManager) -> void:
 	self.building_manager = buildingManager
+	self.entity_manager = entity_manager
 	self.data = data
 	
 	handlers[InputMode.DEFAULT] = handle_default_input
@@ -44,6 +46,9 @@ func handle_default_input(mouse_pos: Vector2i):
 	if Input.is_action_just_pressed("selecting"):
 		print("selecting")
 		current_mode = InputMode.SELECTING
+	if Input.is_action_just_pressed("add_villager"):
+		print("add_villager")
+		entity_manager.create_villager()
 
 func handle_placing_input(mouse_pos: Vector2i):
 	building_manager.set_preview_on(data, mouse_pos, "simple_house")
@@ -61,4 +66,5 @@ func handle_selecting_input(mouse_pos: Vector2i):
 		print("left-click (tried to select)")
 	if Input.is_action_just_pressed("right_click"):
 		print("right-click (default mode)")
+		building_manager.deselect(data)
 		current_mode = InputMode.DEFAULT

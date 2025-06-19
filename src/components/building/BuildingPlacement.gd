@@ -71,7 +71,7 @@ func place_building(ground: Ground, building: Building, global_mouse_pos: Vector
 				if (y_atlas_place == 0):
 					if (x_atlas_place == 0):
 						new_building = SimpleHouse.new()
-						new_building.set_position(tile_map_layer_index + 1, x_index, y_index);
+						new_building.set_tile_position(tile_map_layer_index + 1, x_index, y_index);
 						
 						print(new_building)
 				

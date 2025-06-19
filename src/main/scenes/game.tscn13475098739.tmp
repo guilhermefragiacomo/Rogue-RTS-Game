@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=4 uid="uid://ypycq7vd40qb"]
+[gd_scene load_steps=11 format=3 uid="uid://ypycq7vd40qb"]
 
 [ext_resource type="Script" uid="uid://w1y03b4f4ktl" path="res://src/main/Main.gd" id="1_4dvvg"]
 [ext_resource type="TileSet" uid="uid://ba4gv6trkrdq4" path="res://src/model/data/tile_set.tres" id="2_rnjyy"]
@@ -167,7 +167,6 @@ z_index = 19
 z_as_relative = false
 y_sort_enabled = true
 position = Vector2(0, 153)
-tile_map_data = PackedByteArray("AAAAAPj/AwAAAA0AAAD///f/AwABAA0AAAD///j/AwACAA0AAAAAAPf/AwADAA0AAAACAPX/AwACAAwAAAADAPT/AwADAAwAAAADAPX/AwAAAAwAAAACAPT/AwABAAwAAAAEAPn/AwAEAA0AAAADAPj/AwAFAA0AAAADAPn/AwAEAA4AAAAEAPj/AwAFAA4AAAAHAPj/AwAAAA4AAAAGAPf/AwABAA4AAAAGAPj/AwACAA4AAAAHAPf/AwADAA4AAAAGAPT/AwACAA8AAAAHAPP/AwADAA8AAAAHAPT/AwAAAA8AAAAJAPX/AwAFAA8AAAAEAPL/AwAEAA8AAAAHAPD/AwAEABAAAAAJAPD/AwAFABAAAAAKAPL/AwAEABEAAAALAPD/AwAFABEAAAAKAPj/AwAAABEAAAALAPX/AwABABAAAAAMAPb/AwAAABAAAAALAPb/AwACABAAAAAMAPX/AwADABAAAAAJAPj/AwACABEAAAAKAPf/AwADABEAAAAJAPf/AwABABEAAAA=")
 tile_set = ExtResource("2_rnjyy")
 
 [node name="SprHouseOutline" type="Sprite2D" parent="."]
@@ -195,7 +194,7 @@ occluder = SubResource("OccluderPolygon2D_dubn7")
 visible = false
 light_mask = 3
 z_index = 1
-position = Vector2(260, 39)
+position = Vector2(-290, 266)
 range_item_cull_mask = 3
 shadow_filter_smooth = 4.5
 texture = ExtResource("4_04qyp")
